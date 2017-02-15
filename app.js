@@ -1,28 +1,23 @@
 // calculator display string
 let display = '0';
+let displayStore = '';
+let cmdStore = '';
 
 // Calculator logic
 const updateDisplay = disp => {
   $('#display').text(disp);
 };
 
-const checkMD = op => {
-  if (op === '*' || op === '/') {
-    return true;
-  } else {
-    return false;
-  }
-};
+const calculate = (num1, num2, op) => {
+  let a = +num1;
+  let b = +num2;
 
-const calculate = eq => {
-  console.log('Input Eq:', eq);
-  let cmd = eq.split(' ');
-  cmd.reduce((acc, int, ind, col) => {
-    if (checkMD(int)) {
+  console.log(`A: ${a} | B: ${b}`);
 
-    }
-  }, []);
-
+  if (op === '*') return (a * b).toString();
+  if (op === '/') return (a / b).toString();
+  if (op === '+') return (a + b).toString();
+  if (op === '-') return (a - b).toString();
 };
 
 const calculatorHandler = op => {
@@ -32,19 +27,21 @@ const calculatorHandler = op => {
     } else {
       display += op;
     }
-    updateDisplay(display);
   } else if (op === 'c') {
     display = '0';
-    updateDisplay(display);
   } else if (op === '=') {
-    calculate(display);
+    display = calculate(displayStore, display, cmdStore);
+    displayStore = '0';
+    cmdStore = '';
   } else {
     if (display !== '0') {
-      let cmd = ` ${op} `;
-      display += cmd;
-      updateDisplay(display);
+      cmdStore = op;
+      displayStore = display;
+      display = '0';
     }
   }
+  console.log('displayStore:', displayStore);
+  updateDisplay(display);
 };
 
 // Add text to buttons based on id
